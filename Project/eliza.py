@@ -1,6 +1,10 @@
 import logging
 import random
 import re
+import mysql.connector
+
+
+
 from collections import namedtuple
 
 # Fix Python2/Python3 incompatibility
@@ -9,6 +13,35 @@ except NameError: pass
 
 log = logging.getLogger(__name__)
 
+# SQL Implementation
+class Database:
+    def MyDb():
+        # Connect to the database
+        db = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="w+XdW6dnK8L_GP5",
+            database="dog_database"
+        )
+
+        # Get cursor object
+        cursor = db.cursor()
+
+        # Execute your query
+        cursor.execute("SELECT * FROM dogbreeds")
+
+        # Fetch all the matching rows
+        result = cursor.fetchall()
+
+        # Loop through the rows
+        for row in result:
+            print(row)
+
+        # Close the cursor and database connection
+        cursor.close()
+        db.close()
+
+    print(MyDb() )
 
 class Key:
     def __init__(self, word, weight, decomps):
