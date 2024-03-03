@@ -3,8 +3,6 @@ import random
 import re
 import mysql.connector
 
-
-
 from collections import namedtuple
 
 # Fix Python2/Python3 incompatibility
@@ -15,33 +13,50 @@ log = logging.getLogger(__name__)
 
 # SQL Implementation
 class Database:
-    def MyDb():
+    def __init__(self):
         # Connect to the database
-        db = mysql.connector.connect(
+        self.db = mysql.connector.connect(
             host="localhost",
             user="root",
             password="w+XdW6dnK8L_GP5",
             database="dog_database"
         )
+        self.cursor = self.db.cursor()
 
-        # Get cursor object
-        cursor = db.cursor()
+    def fetch_dog_breed(self, color, ear_type, tail_type, size, coat_type):
+        # Execute query to fetch the dog breed based on attributes
+        query = "SELECT BreedName FROM dogbreeds WHERE Color = %s AND EarType = %s AND TailType = %s AND Size = %s AND CoatType = %s"
+        self.cursor.execute(query, (color, ear_type, tail_type, size, coat_type))
+        result = self.cursor.fetchone()
+        return result[0] if result else None
 
-        # Execute your query
-        cursor.execute("SELECT * FROM dogbreeds")
-
-        # Fetch all the matching rows
-        result = cursor.fetchall()
-
-        # Loop through the rows
-        for row in result:
-            print(row)
-
+    def close(self):
         # Close the cursor and database connection
-        cursor.close()
-        db.close()
+        self.cursor.close()
+        self.db.close()
+# Dogbreed questions
+class DogBreedQuestions:
+    def __init__(self):
+        self.database = Database()
 
-    print(MyDb() )
+    def ask_question(self, question):
+        return input(question + " ")
+
+    def determine_dog_breed(self):
+        color = self.ask_question("What is the color of your dog?")
+        ear_type = self.ask_question("What is the ear type of your dog? (floppy, tall, triangular)")
+        tail_type = self.ask_question("What is the tail type of your dog? (docked, long_and_curved, curled)")
+        size = self.ask_question("What is the size of your dog? (small, medium, large)")
+        coat_type = self.ask_question("What is the coat type of your dog?")
+
+        breed_name = self.database.fetch_dog_breed(color, ear_type, tail_type, size, coat_type)
+        if breed_name:
+            print("Based on the provided attributes, your dog breed might be:", breed_name)
+        else:
+            print("Sorry, we couldn't determine the dog breed based on the provided attributes.")
+
+        self.database.close()
+
 
 class Key:
     def __init__(self, word, weight, decomps):
@@ -260,9 +275,8 @@ class Eliza:
 
 
 def main():
-    eliza = Eliza()
-    eliza.load('doctor.txt')
-    eliza.run()
+    dog_questions = DogBreedQuestions()
+    dog_questions.determine_dog_breed()
 
 if __name__ == '__main__':
     logging.basicConfig()
