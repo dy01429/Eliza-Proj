@@ -1,8 +1,3 @@
--- Dropping tables if they exist to start fresh
-DROP TABLE IF EXISTS BreedColors;
-DROP TABLE IF EXISTS DogColors;
-DROP TABLE IF EXISTS DogBreeds;
-
 -- Creation of DogBreeds table
 CREATE TABLE DogBreeds (
     BreedID INT AUTO_INCREMENT PRIMARY KEY,
@@ -53,8 +48,9 @@ INSERT INTO DogBreeds (BreedName, Size, CoatType, EarType, TailType) VALUES
 ('Bernese Mountain Dog', 'large', 'long', 'floppy', 'curled'),
 ('Maltese', 'small', 'silky', 'triangular', 'curled'),
 ('Cavalier King Charles Spaniel', 'small', 'silky', 'floppy', 'curled'),
-('Basset Hound', 'medium', 'short', 'floppy', 'curled');
+('Basset Hound', 'medium', 'short', 'floppy', 'curled'),
 ('English Setter', 'large', 'medium', 'floppy', 'long_and_curved');
+
 -- Insertion of dog colors
 INSERT INTO DogColors (ColorName) VALUES 
 ('Black'), 
@@ -235,6 +231,6 @@ INSERT INTO BreedColors (BreedID, ColorID) VALUES
 (24, 4); -- Tan
 
 -- English Setter
-(INSERT INTO BreedColors (BreedID, ColorID) VALUES
+INSERT INTO BreedColors (BreedID, ColorID) VALUES
 (25, 1), -- Black
 (25, 2); -- White
