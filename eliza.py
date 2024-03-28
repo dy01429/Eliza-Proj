@@ -6,8 +6,10 @@ import mysql.connector
 from collections import namedtuple
 
 # Fix Python2/Python3 incompatibility
-try: input = raw_input
-except NameError: pass
+try: 
+    input = raw_input
+except NameError: 
+    pass
 
 log = logging.getLogger(__name__)
 
@@ -18,15 +20,15 @@ class Database:
         self.db = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="#Rhuio12345_",
+            password="w+XdW6dnK8L_GP5",
             database="dog_database"
         )
         self.cursor = self.db.cursor()
 
     def fetch_dog_breed(self, color, ear_type, tail_type, size, coat_type):
         # Execute query to fetch the dog breed based on attributes
-        query = "SELECT BreedName FROM dogbreeds WHERE Color = %s AND EarType = %s AND TailType = %s AND Size = %s AND CoatType = %s"
-        self.cursor.execute(query, (color, ear_type, tail_type, size, coat_type))
+        query = "SELECT BreedName FROM DogBreeds WHERE CoatType = %s AND EarType = %s AND TailType = %s AND Size = %s"
+        self.cursor.execute(query, (coat_type, ear_type, tail_type, size))
         result = self.cursor.fetchone()
         return result[0] if result else None
 
@@ -43,11 +45,11 @@ class DogBreedQuestions:
         return input(question + " ")
 
     def determine_dog_breed(self):
-        color = self.ask_question("What is the color of your dog?")
+        color = self.ask_question("What is the color of your dog? (Black, White, Brown, Tan, Brindle, Merle, Chocolate, Yellow)")
         ear_type = self.ask_question("What is the ear type of your dog? (floppy, tall, triangular)")
         tail_type = self.ask_question("What is the tail type of your dog? (docked, long_and_curved, curled)")
-        size = self.ask_question("What is the size of your dog? (small, medium, large)")
-        coat_type = self.ask_question("What is the coat type of your dog?")
+        size = self.ask_question("What is the size of your dog? (small, medium, large, giant)")
+        coat_type = self.ask_question("What is the coat type of your dog? (short, medium, long, curly, double, smooth, dense, silky)")
 
         breed_name = self.database.fetch_dog_breed(color, ear_type, tail_type, size, coat_type)
         if breed_name:
