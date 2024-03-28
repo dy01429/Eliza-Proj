@@ -20,7 +20,7 @@ class Database:
         db = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="w+XdW6dnK8L_GP5",
+            password="#Rhuio12345_",
             database="dog_database"
         )
 
