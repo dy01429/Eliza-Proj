@@ -44,6 +44,16 @@ class DogBreedQuestions:
     def ask_question(self, question):
         return input(question + " ")
 
+    #Probability checker
+    def calculate_probability(self, color, ear_type, tail_type, size, coat_type):
+        # Calculate the number of attributes present in the query
+        num_attributes = sum(1 for attr in (color, ear_type, tail_type, size, coat_type) if attr)
+        # Assuming a total of 5 attributes, adjust this based on your schema
+        total_attributes = 5
+        probability = num_attributes / total_attributes
+        return probability
+
+
     def determine_dog_breed(self):
         color = self.ask_question("What is the color of your dog? (Black, White, Brown, Tan, Brindle, Merle, Chocolate, Yellow)")
         ear_type = self.ask_question("What is the ear type of your dog? (floppy, tall, triangular)")
@@ -53,12 +63,12 @@ class DogBreedQuestions:
 
         breed_name = self.database.fetch_dog_breed(color, ear_type, tail_type, size, coat_type)
         if breed_name:
-            print("Based on the provided attributes, your dog breed might be:", breed_name)
+            probability = self.database.calculate_probability(color, ear_type, tail_type, size, coat_type)
+            print("Based on the provided attributes, there is a {} chance it is a {}".format(probability, breed_name))
         else:
             print("Sorry, we couldn't determine the dog breed based on the provided attributes.")
 
         self.database.close()
-
 
 class Key:
     def __init__(self, word, weight, decomps):
